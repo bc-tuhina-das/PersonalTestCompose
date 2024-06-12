@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PersonalTestCompose</string>
+    <string name="title_activity_info_page">InfoPage</string>
 </resources>

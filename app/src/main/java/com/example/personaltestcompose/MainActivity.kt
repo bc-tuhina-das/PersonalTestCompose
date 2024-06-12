@@ -1,5 +1,7 @@
 package com.example.personaltestcompose
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -47,7 +49,7 @@ import androidx.core.view.WindowCompat
 import com.example.personaltestcompose.ui.theme.PersonalTestComposeTheme
 
 /*
-* TODO:
+* TODO (later):
 *  1. Address focus change when focus is lost from the keyboard
 *  2. Check that size is fixed on the outlined text fields
 *  3. Figure out how to style the status bar
@@ -64,61 +66,7 @@ class MainActivity : ComponentActivity() {
             PersonalTestComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.fillMaxSize(), color = Color.White) {
-                        Column (
-                            modifier = Modifier
-                                .padding(10.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ){
-                            val username = remember { mutableStateOf("") }
-                            val password = remember { mutableStateOf("") }
-                            val focusManager = LocalFocusManager.current
-
-                            Column(
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                Greeting(
-                                    modifier = Modifier.padding(10.dp)
-                                )
-
-                                OutlinedTextField(
-                                    value = username.value,
-                                    onValueChange = { username.value = it },
-                                    label = { Text("Username") },
-                                    modifier = Modifier.fillMaxWidth(0.9f).padding(10.dp)
-                                )
-                                OutlinedTextField(
-                                    value = password.value,
-                                    onValueChange = { password.value = it },
-                                    label = { Text("Password") },
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.9f)
-                                        .padding(10.dp)
-                                        .onFocusChanged { focusState ->
-                                            if (!focusState.isFocused){
-                                                focusManager.clearFocus()
-                                            }
-                                        }
-                                )
-
-                                Button(
-                                    onClick = {
-                                        Log.i("Button Click", "Wow a button was clicked!")
-                                    },
-                                    modifier = Modifier
-                                        .padding(20.dp)
-                                        .requiredWidth(100.dp)
-                                        .requiredHeight(40.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xff984aff)
-                                    )
-                                ) {
-                                    Text("Log In")
-                                }
-                            }
-                        }
+                        LoginPage(this)
                     }
                 }
             }
@@ -131,7 +79,7 @@ class MainActivity : ComponentActivity() {
 fun Greeting(modifier: Modifier = Modifier) {
     val gradientColors = listOf(Blue, Color(0xff984aff), Color(0xffef0fff) /*...*/)
     Text(
-        text = "Hello, user!",
+        text = "Log Into HAC",
         modifier = modifier,
         color = Color.Blue,
         style = TextStyle(
@@ -143,14 +91,68 @@ fun Greeting(modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun LoginPage(context: Context){
+    Column (
+        modifier = Modifier
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        val username = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
+//                            remove eventually
+        val focusManager = LocalFocusManager.current
 
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    PersonalTestComposeTheme {
-//        Greeting("Android")
-//    }
-//}
+        Column(
+            modifier = Modifier
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Greeting(
+                modifier = Modifier.padding(10.dp)
+            )
+
+            OutlinedTextField(
+                value = username.value,
+                onValueChange = { username.value = it },
+                label = { Text("Username") },
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(10.dp)
+            )
+            OutlinedTextField(
+                value = password.value,
+                onValueChange = { password.value = it },
+                label = { Text("Password") },
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .padding(10.dp)
+            )
+
+            Button(
+                onClick = {LogInClick(username.value, password.value, context)},
+                modifier = Modifier
+                    .padding(20.dp)
+                    .requiredWidth(100.dp)
+                    .requiredHeight(40.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xff984aff)
+                )
+            ) {
+                Text("Log In")
+            }
+        }
+    }
+}
+
+fun LogInClick(username:String, password:String, context: Context){
+    //start an intent to move to the next activity
+    val intent = Intent(context, InfoPage::class.java)
+    intent.putExtra("username", username)
+    intent.putExtra("password", password)
+    context.startActivity(intent)
+}
 
 @Composable
 fun FilledButtonExample(onClick: () -> Unit) {
