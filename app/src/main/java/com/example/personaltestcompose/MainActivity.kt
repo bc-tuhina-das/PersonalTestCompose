@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.example.personaltestcompose.ui.theme.PersonalTestComposeTheme
 
+// Just a comment to say that I'm working on this from my personal device to practice using Git
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
