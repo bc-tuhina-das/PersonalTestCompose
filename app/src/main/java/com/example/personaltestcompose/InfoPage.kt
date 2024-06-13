@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.personaltestcompose.ui.theme.PersonalTestComposeTheme
 
 // i'm adding a comment here to start messing with branches more.
+// i'm gonna add another comment to make changes to the brand new fourth branch :)
 class InfoPage : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
